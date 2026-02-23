@@ -1,20 +1,3 @@
-## header ---------------------------
-##
-## Purpose of script: Analyse speech data from the Bundestag with respect to
-## appeals to workers over time
-##
-## Author: David Beck
-##
-## Date Created: 2024-11-06
-##
-## Copyright (c) David Beck, 2024
-## Email: david.beck@uni-bamberg.de
-##
-## Notes:
-##   
-##
-## 
-
 ## Setup -------------------------------------------------------------------
 
 ## remove all objects

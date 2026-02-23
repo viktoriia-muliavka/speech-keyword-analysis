@@ -1,19 +1,3 @@
-## header ---------------------------
-##
-## Purpose of script: Get manifesto data for Germany using data from the manifesto project
-##
-## Author: David Beck
-##
-## Date Created: 2024-07-03
-##
-## Copyright (c) David Beck, 2024
-## Email: david.beck@uni-bamberg.de
-##
-## Notes:
-##   
-##
-## 
-
 # remove all objects from the environment
 rm(list = ls())
 

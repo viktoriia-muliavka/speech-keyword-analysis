@@ -1,22 +1,3 @@
-## header ---------------------------
-##
-## Purpose of script: Import Bundestag debates from Germaparl (https://github.com/PolMine/GermaParlTEI)
-## dataset and prepare it for further analysis. The script also applies a dictionary-based approach to 
-## identify speeches that contain appeals to the working class. 
-## 
-##
-## Author: David Beck
-##
-## Date Created: 2024-09-24
-##
-## Copyright (c) David Beck, 2024
-## Email: david.beck@uni-bamberg.de
-##
-## Notes:
-##   
-##
-## 
-
 ## Setup -------------------------------------------------------------------
 
 ## remove all objects
