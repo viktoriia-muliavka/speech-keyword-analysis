@@ -54,28 +54,6 @@ Specifically:
 
 ---
 
-## Repository Structure
-
-.
-├── R/
-│   ├── 01_data_import_and_keyword_search.R
-│   ├── 02_get_manifestos.R
-│   └── 03_analysis.R
-│
-├── data/
-│   ├── raw/
-│   └── processed/
-│
-├── outputs/
-│   ├── figures/
-│   └── tables/
-│
-├── run_all.R
-├── renv.lock
-└── README.md
-
----
-
 ## Reproducibility
 
 This project uses `renv` for dependency management.
