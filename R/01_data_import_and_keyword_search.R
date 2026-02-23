@@ -1,10 +1,7 @@
 ## Setup -------------------------------------------------------------------
 
-## remove all objects
-rm(list = ls())
-
 ## declare location of the current file within the project
-here::i_am("code/01_data_import_and_keyword_search.R")
+here::i_am("R/01_data_import_and_keyword_search.R")
 
 ## packages 
 pacman::p_load(
@@ -18,11 +15,10 @@ pacman::p_load(
 
 # Import dataset - speeches -----------------------------------------------
 
-data_path <- here('data', 'germaparl_btvote_linkage')
+germaparl_path <- here("data", "raw", "germaparl_btvote_linkage")
 
-speeches <- rio::import(paste0(data_path, '/3.2-speeches.RData'))
-
-speakers <- rio::import(paste0(data_path, '/11-debates_with_BTVote_ids_correct_speaker_ids_debate_ids.RData'))
+speeches <- rio::import(file.path(germaparl_path, "3.2-speeches.RData"))
+speakers <- rio::import(file.path(germaparl_path, "11-debates_with_BTVote_ids_correct_speaker_ids_debate_ids.RData"))
 
 # merge speakers + speeches and data modification -------------------------
 
@@ -183,10 +179,22 @@ gdp_germany <- WDI(indicator='NY.GDP.PCAP.CD', country=c('DE'), start=1960, end=
 
 # retrieve data on on employees by industry
 # data path where the data on employees is located
-data_path <- here('data', 'employees_by_sector.rds')
+employees_path <- here("data", "processed", "employees_by_sector.rds")
+dir.create(dirname(employees_path), recursive = TRUE, showWarnings = FALSE)
 
-# test if the table exists 
-test <- file.exists(data_path)
+if (!file.exists(employees_path)) {
+  url <- "https://www.destatis.de/EN/Themes/Economy/Short-Term-Indicators/Long-Term-Series/Labour-Market/lrerw14a.html"
+  html <- read_html(url)
+
+  html_table <- html %>%
+    html_node("table") %>%
+    html_table() %>%
+    slice(-1)
+
+  saveRDS(html_table, employees_path)
+}
+
+employees_by_sector <- readRDS(employees_path)
 
 # if the file does not exist, scrape the table
 if (test == F) {
@@ -347,8 +355,10 @@ df_aggregate %>%
 
 # Save dataset ------------------------------------------------------------
 
-data_path <- here('data', 'analysis_df.rds')
-rio::export(df_aggregate, data_path)
+analysis_path <- here("data", "processed", "analysis_df.rds")
+dir.create(dirname(analysis_path), recursive = TRUE, showWarnings = FALSE)
+
+saveRDS(df_aggregate, analysis_path)
 
 
 
