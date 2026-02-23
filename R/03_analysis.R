@@ -1,8 +1,5 @@
 ## Setup -------------------------------------------------------------------
 
-## remove all objects
-rm(list = ls())
-
 ## declare location of the current file within the project
 here::i_am("R/03_analysis.R")
 

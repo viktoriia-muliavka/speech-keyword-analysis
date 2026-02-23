@@ -1,42 +1,45 @@
-# remove all objects from the environment
-rm(list = ls())
+## Setup -------------------------------------------------------------------
 
-# declare location of the current file within the project
-here::i_am("code/02_get_manifestos.R")
-
-# load libraries
 library(here)
-library(tidyverse)
+here::i_am("R/02_get_manifestos.R")
+
+library(dplyr)
 library(manifestoR)
 
+## Retrieve manifesto data for Germany -------------------------------------
 
-# Retrieve manifesto data for Germany -------------------------------------
+api_key <- Sys.getenv("MANIFESTO_API_KEY")
+if (api_key == "") {
+  stop("Missing MANIFESTO_API_KEY. Set it in your environment before running.")
+}
+mp_setapikey(api_key)
 
-# define api key
-api_key <- '5c348b0c0afc2937c9a17781e2a3325f'
-mp_setapikey(key = api_key)
+manifestos_path <- here("data", "processed", "manifestos_germany.rds")
+dir.create(dirname(manifestos_path), recursive = TRUE, showWarnings = FALSE)
 
-# get corpus for Germany
-manifesto_data <- mp_corpus(countryname == "Germany",
-                            as_tibble = TRUE)
+if (file.exists(manifestos_path)) {
 
-# Load the main dataset
-main_dataset <- mp_maindataset()
+  message("Loading cached manifesto data: ", manifestos_path)
+  manifesto_data <- readRDS(manifestos_path)
 
-# Select the relevant columns
-party_info <- main_dataset %>%
-  select(party, partyname, partyabbrev)
+} else {
 
-# Remove duplicate entries to get unique party codes and names
-party_info_unique <- party_info %>%
-  distinct()
+  message("Downloading manifesto data from Manifesto Project API...")
 
-# merge the data with the party information
-manifesto_data  <- manifesto_data  %>%
-  left_join(party_info_unique, by = c("party"))
+  manifesto_data <- mp_corpus(countryname == "Germany", as_tibble = TRUE)
 
-# Save the data
-rio::export(manifesto_data, here('data', 'manifestos_germany.rds'))
+  main_dataset <- mp_maindataset()
+
+  party_info_unique <- main_dataset %>%
+    select(party, partyname, partyabbrev) %>%
+    distinct()
+
+  manifesto_data <- manifesto_data %>%
+    left_join(party_info_unique, by = "party")
+
+  saveRDS(manifesto_data, manifestos_path)
+  message("Saved cached manifesto data to: ", manifestos_path)
+}
 
 
 
