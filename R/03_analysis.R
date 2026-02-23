@@ -4,7 +4,7 @@
 rm(list = ls())
 
 ## declare location of the current file within the project
-here::i_am("code/03_analysis.R")
+here::i_am("R/03_analysis.R")
 
 ## packages 
 pacman::p_load(
@@ -20,8 +20,12 @@ pacman::p_load(
 
 # Import dataset - speeches -----------------------------------------------
 
-data_path <- here('data', 'analysis_df.rds')
-result_path <- here('results')
+data_path <- here("data", "processed", "analysis_df.rds")
+
+fig_path <- here("outputs", "figures")
+
+dir.create(fig_path, recursive = TRUE, showWarnings = FALSE)
+dir.create(tab_path, recursive = TRUE, showWarnings = FALSE)
 
 df_aggregate <- rio::import(data_path)
 
@@ -198,11 +202,12 @@ plot_manifestos_workers <- plot_data %>%
   theme(legend.position = 'none') +
   labs(y = 'Mentions of worker keywords', x = 'Year')
 
-# save plot
-# ggsave(plot = plot_manifestos_workers,
-#        filename = 'Working class appeals used in German part manifestos (1949-2021).PNG',
-#        path = result_path, 
-#        dpi = 300, width = 7, height = 7)
+ # # save plot
+ggsave(
+  filename = file.path(fig_path, "fig01_manifestos_workers.png"),
+  plot = plot_manifestos_workers,
+  dpi = 300, width = 7, height = 7
+)
 
 
 # plot mentions of employee keywords per party over time
@@ -236,10 +241,11 @@ plot_desc_trend <- plot_desc_trend +  # Create facets by "group"
 
 
 # # save plot
-# ggsave(plot = plot_desc_trend,
-#        filename = 'Working class appeals used by German parties (1949-2021).PNG',
-#        path = result_path, 
-#        dpi = 300, width = 7, height = 6)
+ggsave(
+  filename = file.path(fig_path, "fig02_workers_trend_by_party.png"),
+  plot = plot_desc_trend,
+  dpi = 300, width = 7, height = 6
+)
 
 
 # calculate difference between SPD and CSU over time
@@ -257,10 +263,11 @@ plot_diff <- data_plot_diff %>%
 
 
 # # save plot
-# ggsave(plot = plot_diff,
-#        filename = 'Differences in working class appeals between Conservatives and SPD over time (1949-2021).PNG',
-#        path = result_path, 
-#        dpi = 300, width = 7, height = 6)
+ggsave(
+  filename = file.path(fig_path, "fig03_diff_spd_cducsu.png"),
+  plot = plot_diff,
+  dpi = 300, width = 7, height = 6
+)
 
 # plot difference between SPD and CSU over time
 plot_diff_fdp <- data_plot_diff %>% 
@@ -271,10 +278,11 @@ plot_diff_fdp <- data_plot_diff %>%
   labs(x = 'Year', y = 'Difference in mentions of worker keywords (SPD - FDP)')
 
 # # save plot
-# ggsave(plot = plot_diff_fdp,
-#        filename = 'Differences in working class appeals between FDP and SPD over time (1949-2021).PNG',
-#        path = result_path, 
-#        dpi = 300, width = 7, height = 6)
+ggsave(
+  filename = file.path(fig_path, "fig04_diff_spd_fdp.png"),
+  plot = plot_diff_fdp,
+  dpi = 300, width = 7, height = 6
+)
 
 
 # plot mentions of employee per MP and party
@@ -292,10 +300,11 @@ plot_desc_trend_employee <- df_aggregate %>%
   labs(y = "Mentions of 'employee' (party average)", x = 'Year')
 
 # # save plot
-# ggsave(plot = plot_desc_trend_employee,
-#        filename = "Mentions of 'employee' in Bundestag speeches (1949-2021).PNG",
-#        path = result_path, 
-#        dpi = 300, width = 7, height = 6)
+ggsave(
+  filename = file.path(fig_path, "fig05_employee_trend_by_party.png"),
+  plot = plot_desc_trend_employee,
+  dpi = 300, width = 7, height = 6
+)
 
 # plot share of industry over time
 plot_desc_trend_industry <- df_aggregate %>% 
@@ -307,10 +316,11 @@ plot_desc_trend_industry <- df_aggregate %>%
 
 
 # # save plot
-# ggsave(plot = plot_desc_trend_industry,
-#        filename = "Employment in production industry in Germany, proportion in % (1954-2021).PNG",
-#        path = result_path, 
-#        dpi = 300, width = 7, height = 6)
+ggsave(
+  filename = file.path(fig_path, "fig06_industry_share_trend.png"),
+  plot = plot_desc_trend_industry,
+  dpi = 300, width = 7, height = 6
+)
 
 # plot share of industry over time --> alternative version with different y-axis ticks
 plot_desc_trend_industry <- df_aggregate %>% 
@@ -323,10 +333,11 @@ plot_desc_trend_industry <- df_aggregate %>%
 
 
 # # save plot
-# ggsave(plot = plot_desc_trend_industry,
-#        filename = "Employment in production industry in Germany, proportion in % (1954-2021).PNG",
-#        path = result_path, 
-#        dpi = 300, width = 7, height = 6)
+ggsave(
+  filename = file.path(fig_path, "fig07_conditional_predictions.png"),
+  plot = plot_pred,
+  dpi = 300, width = 7, height = 6
+)
 
 # Regression models -------------------------------------------------------
 
@@ -393,10 +404,11 @@ plot_pred <- plot_pred  +
 plot_pred
 
 # save plot
-# ggsave(plot = plot_pred,
-#        filename = "Conditional predictions (Effect of share of industrial workers on working class appeals).PNG",
-#        path = result_path, 
-#        dpi = 300, width = 7, height = 6)
+ggsave(
+  filename = file.path(fig_path, "fig04_diff_spd_fdp.png"),
+  plot = plot_diff_fdp,
+  dpi = 300, width = 7, height = 6
+)
 
 
 # Alternative specification: year + period dummy --------------------------

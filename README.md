@@ -52,6 +52,10 @@ Specifically:
 - Time spline (4 degrees of freedom)
 - Controls for economic conditions and party competition
 
+## Example Output
+
+![Worker appeals trend](outputs/figures/fig02_workers_trend_by_party.png)
+
 ---
 
 ## Reproducibility
